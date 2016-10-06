@@ -9,7 +9,7 @@ class InventoryController extends Controller
 {
     /**
      * Store the new inventory item.
-     * 
+     *
      * @param \Illuminate\Http\Request     $request
      * @param \App\Extractors\XmlExtractor $extractor
      * @return int

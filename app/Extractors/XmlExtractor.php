@@ -34,8 +34,6 @@ class XmlExtractor
         $machine = $this->createMachine($data);
 
         $this->attachImages($machine, $data);
-
-        dd($machine);
     }
 
     /**
