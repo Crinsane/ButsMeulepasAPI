@@ -31,9 +31,13 @@ class XmlExtractor
     {
         $data = $this->parse($xml);
 
-        $machine = $this->createMachine($data);
+        $machine = Machine::where('post_name', $data['voertuignr'])->first();
 
-        $this->attachImages($machine, $data);
+        if (!$machine) {
+            $machine = $this->createMachine($data);
+
+            $this->attachImages($machine, $data);
+        }
     }
 
     /**
@@ -56,6 +60,7 @@ class XmlExtractor
     {
         $machine = new Machine([
             'post_title' => $data['merk'] . ' ' . $data['type'],
+            'post_name' => $data['voertuignr'],
             'post_content' => $data['opmerkingen'],
             'post_type' => 'machine',
         ]);
