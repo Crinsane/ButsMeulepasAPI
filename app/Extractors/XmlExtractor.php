@@ -94,6 +94,7 @@ class XmlExtractor
         $machine->meta->btw_marge = $data['btw_marge'];
         $machine->meta->basiskleur = $data['basiskleur'];
         $machine->meta->bouwjaar = $data['bouwjaar'];
+        $machine->meta->price = $data['prijstype'];
 
         $machine->save();
 
