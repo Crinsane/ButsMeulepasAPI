@@ -95,6 +95,7 @@ class XmlExtractor
         $machine->meta->basiskleur = $data['basiskleur'];
         $machine->meta->bouwjaar = $data['bouwjaar'];
         $machine->meta->price = $data['prijstype'];
+        $machine->meta->staat_algemeen = $data['staat_algemeen'];
 
         $machine->save();
 
