@@ -78,6 +78,14 @@
                     Laravel
                 </div>
 
+                <form action="/inventory" method="POST">
+                    @foreach ($params as $key => $param)
+                        <input type="text" name="{{ $key }}" value="{{ $param }}">
+                    @endforeach
+
+                    <button type="submit">Submit</button>
+                </form>
+
                 <div class="links">
                     <a href="https://laravel.com/docs">Documentation</a>
                     <a href="https://laracasts.com">Laracasts</a>
