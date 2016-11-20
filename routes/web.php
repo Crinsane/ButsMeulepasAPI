@@ -16,3 +16,7 @@ Route::get('/', function () {
 });
 
 Route::post('/inventory', 'InventoryController@store');
+
+Route::get('/test', function () {
+    \Illuminate\Support\Facades\Storage::disk('local')->put('file.txt', print_r(request()->all(), true));
+});
