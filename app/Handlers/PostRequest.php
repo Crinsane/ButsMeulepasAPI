@@ -129,7 +129,7 @@ class PostRequest
                 'buildyear'    => $request->bouwjaar,
                 'price'        => $request->prijstype,
                 'condition'    => $request->staat_algemeen,
-            ])
+            ]);
         }
     }
 
