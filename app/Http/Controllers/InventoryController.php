@@ -15,7 +15,7 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->dispatch(new HandleInventoryRequest((object)$request->all()));
+        $this->dispatch(new HandleInventoryRequest($request->all()));
 
         return 1;
     }

@@ -37,16 +37,16 @@ class HandleInventoryRequest implements ShouldQueue
     private $brandRepo;
 
     /**
-     * The request.
+     * The request data.
      *
-     * @var \Illuminate\Http\Request
+     * @var array
      */
     private $request;
 
     /**
      * PostRequest constructor.
      *
-     * @param \stdClass $request
+     * @param array $request
      */
     public function __construct($request)
     {
@@ -67,17 +67,17 @@ class HandleInventoryRequest implements ShouldQueue
         $this->mediaRepo = $mediaRepo;
         $this->brandRepo = $brandRepo;
 
-        switch ($this->request->actie) {
-            case 'add': return $this->createNew($this->request);
-            case 'change': return $this->updatePost($this->request);
-            case 'delete': return $this->deletePost($this->request);
+        switch ($this->request['actie']) {
+            case 'add': return $this->createNew();
+            case 'change': return $this->updatePost();
+            case 'delete': return $this->deletePost();
             default: throw new \InvalidArgumentException('The action can only be "add", "change" or "delete".');
         }
     }
 
-    private function generateImages($request, $post)
+    private function generateImages($post)
     {
-        $images = collect(explode(',', $request->afbeeldingen));
+        $images = collect(explode(',', $this->request['afbeeldingen']));
 
         return $images->filter(function ($image) {
             return ! empty($image);
@@ -90,73 +90,69 @@ class HandleInventoryRequest implements ShouldQueue
         });
     }
 
-    private function setBrand($post, $request)
+    private function setBrand($post)
     {
-        $brand = $this->brandRepo->getByName($request->merk);
+        $brand = $this->brandRepo->getByName($this->request['merk']);
 
         if (! $brand) {
-            $brand = $this->brandRepo->createBrand($request->merk);
+            $brand = $this->brandRepo->createBrand($this->request['merk']);
         }
 
         $this->postRepo->attachToBrand($post->id, $brand->id);
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @return \stdClass
-     */
-    private function createNew(Request $request)
+    private function createNew()
     {
         $post = $this->postRepo->createPost([
-            'title'        => $request->merk . ' ' . $request->type,
-            'slug'         => $request->voertuignr_hexon,
-            'content'      => $request->opmerkingen,
+            'title'        => array_get($this->request, 'merk') . ' ' . array_get($this->request, 'type'),
+            'slug'         => array_get($this->request, 'voertuignr_hexon'),
+            'content'      => array_get($this->request, 'opmerkingen'),
             'status'       => 'publish',
-            'body'         => $request->carrosserie,
-            'fuel'         => $request->brandstof,
-            'transmission' => $request->transmissie,
-            'vat'          => $request->btw_marge,
-            'basecolor'    => $request->basiskleur,
-            'buildyear'    => $request->bouwjaar,
-            'price'        => $request->prijstype,
-            'condition'    => $request->staat_algemeen,
+            'body'         => array_get($this->request, 'carrosserie'),
+            'fuel'         => array_get($this->request, 'brandstof'),
+            'transmission' => array_get($this->request, 'transmissie'),
+            'vat'          => array_get($this->request, 'btw_marge'),
+            'basecolor'    => array_get($this->request, 'basiskleur'),
+            'buildyear'    => array_get($this->request, 'bouwjaar'),
+            'price'        => array_get($this->request, 'prijstype'),
+            'condition'    => array_get($this->request, 'staat_algemeen'),
         ]);
 
-        $images = $this->generateImages($request, $post);
+        $images = $this->generateImages($post);
 
         if (!$images->isEmpty()) {
             $this->postRepo->setFeaturedImage($post->id, $images->first()->id);
         }
 
-        $this->setBrand($post, $request);
+        $this->setBrand($post);
 
         return $post;
     }
 
-    private function updatePost($request)
+    private function updatePost()
     {
-        $post = $this->postRepo->findBySlug($request->voertuignr_hexon);
+        $post = $this->postRepo->findBySlug($this->request['voertuignr_hexon']);
 
         if ($post) {
             $this->postRepo->update($post->id, [
-                'title'        => $request->merk . ' ' . $request->type,
-                'content'      => $request->opmerkingen,
+                'title'        => array_get($this->request, 'merk') . ' ' . array_get($this->request, 'type'),
+                'content'      => array_get($this->request, 'opmerkingen'),
                 'status'       => 'publish',
-                'body'         => $request->carrosserie,
-                'fuel'         => $request->brandstof,
-                'transmission' => $request->transmissie,
-                'vat'          => $request->btw_marge,
-                'basecolor'    => $request->basiskleur,
-                'buildyear'    => $request->bouwjaar,
-                'price'        => $request->prijstype,
-                'condition'    => $request->staat_algemeen,
+                'body'         => array_get($this->request, 'carrosserie'),
+                'fuel'         => array_get($this->request, 'brandstof'),
+                'transmission' => array_get($this->request, 'transmissie'),
+                'vat'          => array_get($this->request, 'btw_marge'),
+                'basecolor'    => array_get($this->request, 'basiskleur'),
+                'buildyear'    => array_get($this->request, 'bouwjaar'),
+                'price'        => array_get($this->request, 'prijstype'),
+                'condition'    => array_get($this->request, 'staat_algemeen'),
             ]);
         }
     }
 
-    private function deletePost($request)
+    private function deletePost()
     {
-        $post = $this->postRepo->findBySlug($request->voertuignr_hexon);
+        $post = $this->postRepo->findBySlug($this->request['voertuignr_hexon']);
 
         if ($post) {
             if ($post->_links) {
