@@ -44,7 +44,7 @@ class PostRequest
         $this->brandRepo = $brandRepo;
     }
 
-    public function handle(Request $request)
+    public function handle($request)
     {
         switch ($request->actie) {
             case 'add': return $this->createNew($request);

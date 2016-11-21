@@ -46,9 +46,9 @@ class HandleInventoryRequest implements ShouldQueue
     /**
      * PostRequest constructor.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \stdClass $request
      */
-    public function __construct(Request $request)
+    public function __construct($request)
     {
         $this->request = $request;
     }
