@@ -10,7 +10,8 @@
         "jgrossi/corcel": "^1.2",
         "sabre/xml": "^1.4",
         "guzzlehttp/guzzle": "^6.2",
-        "intervention/image": "^2.3"
+        "intervention/image": "^2.3",
+        "pda/pheanstalk": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
