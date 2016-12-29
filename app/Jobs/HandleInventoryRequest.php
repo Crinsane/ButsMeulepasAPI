@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 class HandleInventoryRequest implements ShouldQueue
 {
@@ -124,7 +125,12 @@ class HandleInventoryRequest implements ShouldQueue
             $this->postRepo->setFeaturedImage($post->id, $images->first()->id);
         }
 
-        $this->setBrand($post);
+        try {
+            $this->setBrand($post);
+        } catch (\Exception $e) {
+            Log::error('Error while setting the brand to '.$this->request['merk'].'.');
+        }
+
 
         return $post;
     }
