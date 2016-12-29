@@ -94,7 +94,7 @@ class HandleInventoryRequest implements ShouldQueue
     private function setBrand($post)
     {
         $brand = $this->brandRepo->getByName($this->request['merk']);
-
+Log::debug('Brand: ' . print_r($brand, true));
         if (! $brand) {
             $brand = $this->brandRepo->createBrand($this->request['merk']);
         }
@@ -128,7 +128,7 @@ class HandleInventoryRequest implements ShouldQueue
         try {
             $this->setBrand($post);
         } catch (\Exception $e) {
-            Log::error('Error while setting the brand to '.$this->request['merk'].'.');
+            Log::error('Error while setting the brand to '.$this->request['merk'].' . '.$e->getMessage());
         }
 
 
