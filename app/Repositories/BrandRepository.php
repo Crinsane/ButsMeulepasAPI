@@ -2,8 +2,6 @@
 
 namespace App\Repositories;
 
-use Illuminate\Support\Facades\Log;
-
 class BrandRepository extends Repository
 {
     /**
@@ -25,8 +23,8 @@ class BrandRepository extends Repository
         $filtered = array_filter($brands, function ($brand) use ($name) {
             return $brand->slug == str_slug($name);
         });
-Log::debug('Found: '.print_r($filtered, true));
-        if (count($filtered)) return $filtered[0];
+
+        if (count($filtered)) return head($filtered);
 
         return false;
     }
