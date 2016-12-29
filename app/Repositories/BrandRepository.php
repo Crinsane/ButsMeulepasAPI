@@ -17,7 +17,7 @@ class BrandRepository extends Repository
         $brands = $this->decodeResponse($response);
 
         $filtered = array_filter($brands, function ($brand) use ($name) {
-            return $brand->slug === str_slug($name);
+            return $brand->slug == str_slug($name);
         });
 
         if (count($filtered)) return $filtered[0];
