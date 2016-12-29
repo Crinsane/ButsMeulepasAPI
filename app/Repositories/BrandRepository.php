@@ -14,7 +14,11 @@ class BrandRepository extends Repository
      */
     public function getByName($name)
     {
-        $response = $this->client->request('GET', 'brand');
+        $response = $this->client->request('GET', 'brand', [
+            'form_params' => [
+                'per_page' => 100
+            ]
+        ]);
 
         $brands = $this->decodeResponse($response);
 
