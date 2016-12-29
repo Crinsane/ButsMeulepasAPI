@@ -25,7 +25,7 @@ class BrandRepository extends Repository
         $filtered = array_filter($brands, function ($brand) use ($name) {
             return $brand->slug == str_slug($name);
         });
-Log::debug('Found: '.print_r($filtered));
+Log::debug('Found: '.print_r($filtered, true));
         if (count($filtered)) return $filtered[0];
 
         return false;
