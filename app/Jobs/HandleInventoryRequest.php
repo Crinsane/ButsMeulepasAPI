@@ -95,7 +95,6 @@ class HandleInventoryRequest implements ShouldQueue
     {
         $brand = $this->brandRepo->getByName($this->request['merk']);
 
-        Log::debug('Found brand: ' . print_r($brand, true));
         if (! $brand) {
             $brand = $this->brandRepo->createBrand($this->request['merk']);
         }
