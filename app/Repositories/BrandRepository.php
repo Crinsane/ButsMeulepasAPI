@@ -15,7 +15,7 @@ class BrandRepository extends Repository
     public function getByName($name)
     {
         $response = $this->client->request('GET', 'brand', [
-            'form_params' => [
+            'query' => [
                 'per_page' => 100
             ]
         ]);
